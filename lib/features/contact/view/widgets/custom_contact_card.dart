@@ -62,7 +62,7 @@ class CustomContactCard extends ConsumerWidget {
             ].vStack(alignment: MainAxisAlignment.center).p(15),
           );
         },
-      ).h(250).w(370).p(10),
+      ).h(200).w(300).p(10),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiran_portfolio_website/features/projects/view/widgets/custom_project_card.dart';
+import 'package:kiran_portfolio_website/shared/extenstion/fade_extenstion.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ProjectsPage extends StatelessWidget {
@@ -8,14 +9,15 @@ class ProjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return [
-      "Projects".text.xl6.make(),
+      "Projects".text.xl6.make().fadeInUp(),
       "Here are few samples of my previous work :)"
           .text
           .color(Colors.grey)
           .xl2
-          .make(),
+          .make()
+          .fadeInUp(),
       VxBox(
-              child: const Wrap(
+          child: const Wrap(
         alignment: WrapAlignment.center,
         runSpacing: 8.0,
         children: [
@@ -25,11 +27,7 @@ class ProjectsPage extends StatelessWidget {
           CusotmProjectCard(),
           CusotmProjectCard(),
         ],
-      ))
-          .height(context.screenHeight * 0.7)
-          .make()
-          .pSymmetric(h: 150)
-          .pSymmetric(v: 40)
+      )).height(500).make().pSymmetric(h: 150).pSymmetric(v: 40)
     ].vStack().pSymmetric(v: 20);
   }
 }
