@@ -5,6 +5,7 @@ import 'package:kiran_portfolio_website/core/gen/assets.gen.dart';
 import 'package:kiran_portfolio_website/features/dashboard/view/dash_board.dart';
 import 'package:kiran_portfolio_website/features/tools_and_tech/view/widgets/custom_square_container.dart';
 import 'package:kiran_portfolio_website/shared/extenstion/fade_extenstion.dart';
+import 'package:kiran_portfolio_website/shared/widgets/custom_text_heading.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ToolsAndTech extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ToolsAndTechState extends State<ToolsAndTech> {
     return Padding(
       padding: const EdgeInsets.all(60),
       child: [
-        "Tools&Tech".text.size(50).make().p(20).fadeInUp(),
+        const CustomSectionHeading(headingName: "Tools & Tech"),
         Wrap(
           alignment: WrapAlignment.spaceAround,
           spacing: 50,

@@ -16,6 +16,9 @@ class $AssetsImagesGen {
   AssetGenImage get facebook =>
       const AssetGenImage('assets/images/facebook.png');
 
+  /// File path: assets/images/github.png
+  AssetGenImage get github => const AssetGenImage('assets/images/github.png');
+
   /// File path: assets/images/insta.png
   AssetGenImage get insta => const AssetGenImage('assets/images/insta.png');
 
@@ -26,6 +29,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/profile.jpg
   AssetGenImage get profile => const AssetGenImage('assets/images/profile.jpg');
 
+  /// File path: assets/images/profile_side.jpg
+  AssetGenImage get profileSide =>
+      const AssetGenImage('assets/images/profile_side.jpg');
+
+  $AssetsImagesServiceImagesGen get serviceImages =>
+      const $AssetsImagesServiceImagesGen();
   $AssetsImagesToolsImagesGen get toolsImages =>
       const $AssetsImagesToolsImagesGen();
 
@@ -35,7 +44,35 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [facebook, insta, linkedin, profile, whatsapp];
+      [facebook, github, insta, linkedin, profile, profileSide, whatsapp];
+}
+
+class $AssetsImagesServiceImagesGen {
+  const $AssetsImagesServiceImagesGen();
+
+  /// File path: assets/images/service_images/api.png
+  AssetGenImage get api =>
+      const AssetGenImage('assets/images/service_images/api.png');
+
+  /// File path: assets/images/service_images/mobile_app.png
+  AssetGenImage get mobileApp =>
+      const AssetGenImage('assets/images/service_images/mobile_app.png');
+
+  /// File path: assets/images/service_images/opensource.png
+  AssetGenImage get opensource =>
+      const AssetGenImage('assets/images/service_images/opensource.png');
+
+  /// File path: assets/images/service_images/prototyping.png
+  AssetGenImage get prototyping =>
+      const AssetGenImage('assets/images/service_images/prototyping.png');
+
+  /// File path: assets/images/service_images/ui_ux.png
+  AssetGenImage get uiUx =>
+      const AssetGenImage('assets/images/service_images/ui_ux.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [api, mobileApp, opensource, prototyping, uiUx];
 }
 
 class $AssetsImagesToolsImagesGen {

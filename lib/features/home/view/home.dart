@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate_on_scroll/flutter_animate_on_scroll.dart';
 import 'package:gap/gap.dart';
 import 'package:kiran_portfolio_website/const/resource.dart';
+import 'package:kiran_portfolio_website/core/gen/assets.gen.dart';
+import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:kiran_portfolio_website/features/home/view/widgets/custom_socialmedia_icon.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -52,27 +54,34 @@ class _HomePageState extends State<HomePage>
                   ),
                   child: AnimatedTextKit(
                     animatedTexts: [
-                      WavyAnimatedText('Hi There',
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 55)),
+                      WavyAnimatedText(
+                        'Hi There',
+                        textStyle: const TextStyle(
+                          fontFamily: FontFamily.montserrat,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 55,
+                        ),
+                      ),
                     ],
                     isRepeatingAnimation: true,
                   ),
                 ).box.make(),
-                const Text.rich(
+                Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'Kiran',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 55),
+                            fontFamily: FontFamily.montserrat,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 55),
                       ),
                       TextSpan(
                         text: ' Kamal',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 55,
-                          color: Color.fromARGB(255, 234, 138, 4),
+                          color: context.primaryColor,
                         ),
                       ),
                     ],
@@ -86,16 +95,16 @@ class _HomePageState extends State<HomePage>
                       style: TextStyle(
                         fontSize: 23,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Horizon',
+                        fontFamily: FontFamily.montserrat,
                       ),
                     ),
                     const SizedBox(height: 100.0),
                     DefaultTextStyle(
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Horizon',
-                          color: Color.fromARGB(255, 234, 138, 4)),
+                          fontFamily: FontFamily.poppins,
+                          color: context.primaryColor),
                       child: AnimatedTextKit(
                         animatedTexts: [
                           TyperAnimatedText(
@@ -115,21 +124,24 @@ class _HomePageState extends State<HomePage>
                       ),
                     )
                   ],
-                ).box.width(250).make(),
+                ).box.make(),
                 const Gap(20),
-                const Row(
+                Row(
                   children: [
-                    CustomSocialMediaIcons(
+                    const CustomSocialMediaIcons(
                       assetName: R.ASSETS_IMAGES_FACEBOOK_PNG,
                     ),
-                    CustomSocialMediaIcons(
+                    const CustomSocialMediaIcons(
                       assetName: R.ASSETS_IMAGES_INSTA_PNG,
                     ),
-                    CustomSocialMediaIcons(
+                    const CustomSocialMediaIcons(
                       assetName: R.ASSETS_IMAGES_LINKEDIN_PNG,
                     ),
-                    CustomSocialMediaIcons(
+                    const CustomSocialMediaIcons(
                       assetName: R.ASSETS_IMAGES_WHATSAPP_PNG,
+                    ),
+                    CustomSocialMediaIcons(
+                      assetName: MyAssets.images.github.path,
                     ),
                   ],
                 )

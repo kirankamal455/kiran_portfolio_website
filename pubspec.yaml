@@ -9,12 +9,12 @@ environment:
   sdk: '>=3.3.0-219.0.dev <4.0.0'
 
 dependencies:
- 
   animated_text_kit: ^4.2.2
   cupertino_icons: ^1.0.6
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.0
   flutter_animate_on_scroll: ^0.0.2
   flutter_gen: ^5.4.0
   flutter_riverpod: ^2.4.10
@@ -22,6 +22,7 @@ dependencies:
   gap: ^3.0.1
   hovering: ^1.0.4
   responsive_framework: ^1.1.1
+  selectable: null
   velocity_x: ^4.1.2
 
 dev_dependencies:
@@ -61,3 +62,25 @@ flutter:
   assets:
     - assets/images/
     - assets/images/tools_images/
+    - assets/images/service_images/
+  fonts:
+    - family: Agustina
+      fonts:
+        - asset: assets/fonts/agustina/agustina.otf
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/montserrat.ttf
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/poppins/Poppins-Light.ttf
+        - asset: assets/fonts/poppins/Poppins-Bold.ttf
+          weight: 900
+        - asset: assets/fonts/poppins/Poppins-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/poppins/Poppins-Italic.ttf
+          style: italic

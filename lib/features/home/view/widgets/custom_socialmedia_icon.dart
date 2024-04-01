@@ -12,14 +12,14 @@ class CustomSocialMediaIcons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10),
       child: Container(
-        height: 30,
-        width: 30,
+        height: 40,
+        width: 40,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(assetName),
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ),
         ),
       ),

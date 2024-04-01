@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kiran_portfolio_website/features/contact/view/widgets/custom_contact_card.dart';
 import 'package:kiran_portfolio_website/shared/extenstion/fade_extenstion.dart';
+import 'package:kiran_portfolio_website/shared/widgets/custom_text_heading.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ContactPage extends StatelessWidget {
@@ -10,13 +11,14 @@ class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return [
-      "Get in Touch"
-          .text
-          .xl6
-          .make()
-          .fadeInUp(duration: const Duration(milliseconds: 1300), offset: 100),
+      const CustomSectionHeading(headingName: "Get in Touch"),
+      // "Get in Touch"
+      //     .text
+      //     .xl6
+      //     .make()
+      //     .fadeInUp(duration: const Duration(milliseconds: 1300), offset: 100),
       VxBox(
-              child: Wrap(
+          child: Wrap(
         alignment: WrapAlignment.center,
         spacing: 8.0,
         runSpacing: 8.0,
@@ -25,23 +27,19 @@ class ContactPage extends StatelessWidget {
             icon: Icons.home,
             tittle: "Home",
             subtittle: "Pathanamthitta, Kerala",
-          ).fadeInDown(milliseconds: 500, offset: 150),
+          ).fadeInUp(offset: 0),
           const CustomContactCard(
             icon: Icons.phone,
             tittle: "Phone",
             subtittle: "+918113887254",
-          ).fadeInDown(milliseconds: 1000, offset: 200),
+          ).fadeInUp(offset: 50),
           const CustomContactCard(
             icon: Icons.email,
             tittle: "Email",
             subtittle: "Kirankamal45@gmail.com",
-          ).fadeInDown(milliseconds: 1200, offset: 250),
+          ).fadeInUp(offset: 100),
         ],
-      ))
-          .height(context.screenHeight * 0.37)
-          .make()
-          .pSymmetric(h: 150)
-          .pSymmetric(v: 40)
+      )).make().pSymmetric(h: 150).pSymmetric(v: 40)
     ].vStack().pSymmetric(v: 20);
   }
 }

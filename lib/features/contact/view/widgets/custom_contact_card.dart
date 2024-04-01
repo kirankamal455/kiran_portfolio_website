@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:hovering/hovering.dart';
+import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:kiran_portfolio_website/features/contact/controller/contact_controller_pod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -40,25 +41,27 @@ class CustomContactCard extends ConsumerWidget {
                 boxShadow: [
                   isHover
                       ? BoxShadow(
-                          color: Colors.yellow.withAlpha(100),
+                          color: context.primaryColor,
                           blurRadius: 12.0,
                           offset: const Offset(0.0, 0.0),
                         )
                       : BoxShadow(
                           color: Colors.black.withAlpha(100),
-                          blurRadius: 12.0,
+                          blurRadius: 0,
                           offset: const Offset(0.0, 0.0),
                         )
                 ]),
             child: [
               Icon(
                 icon,
-                color: Colors.red,
                 size: 50,
               ),
               const Gap(10),
-              tittle.text.xl.bold.make().pSymmetric(v: 5),
-              subtittle.text.make()
+              tittle.text.xl.bold
+                  .fontFamily(FontFamily.montserrat)
+                  .make()
+                  .pSymmetric(v: 5),
+              subtittle.text.fontFamily(FontFamily.montserrat).make()
             ].vStack(alignment: MainAxisAlignment.center).p(15),
           );
         },

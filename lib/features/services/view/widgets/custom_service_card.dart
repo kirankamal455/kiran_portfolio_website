@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:kiran_portfolio_website/features/services/controller/service_card_hover_pod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CustomServiceCardCard extends ConsumerWidget {
   final String tittle;
-
+  final String imagePath;
   const CustomServiceCardCard({
+    required this.imagePath,
     super.key,
     required this.tittle,
   });
@@ -38,20 +40,23 @@ class CustomServiceCardCard extends ConsumerWidget {
                 boxShadow: [
                   isHover
                       ? BoxShadow(
-                          color: Colors.yellow.withAlpha(100),
+                          color: context.primaryColor,
                           blurRadius: 12.0,
                           offset: const Offset(0.0, 0.0),
                         )
                       : BoxShadow(
                           color: Colors.black.withAlpha(100),
-                          blurRadius: 12.0,
+                          blurRadius: 5,
                           offset: const Offset(0.0, 0.0),
                         )
                 ]),
             child: [
-              VxBox().color(Colors.yellow).height(50).width(50).make(),
+              VxBox(child: Image.asset(imagePath)).height(50).width(50).make(),
               const Gap(10),
-              tittle.text.xl.bold.make().pSymmetric(v: 5),
+              tittle.text.xl.bold
+                  .fontFamily(FontFamily.montserrat)
+                  .make()
+                  .pSymmetric(v: 5),
             ].vStack(alignment: MainAxisAlignment.center).p(15),
           );
         },

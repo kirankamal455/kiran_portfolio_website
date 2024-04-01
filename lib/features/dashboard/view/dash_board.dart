@@ -2,12 +2,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate_on_scroll/flutter_animate_on_scroll.dart';
 import 'package:gap/gap.dart';
+import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:kiran_portfolio_website/features/about_me/view/about_me.dart';
 import 'package:kiran_portfolio_website/features/contact/view/contact.dart';
+import 'package:kiran_portfolio_website/features/footer_section/view/footer_section.dart';
 import 'package:kiran_portfolio_website/features/home/view/home.dart';
 import 'package:kiran_portfolio_website/features/projects/view/projects.dart';
 import 'package:kiran_portfolio_website/features/services/view/services.dart';
+import 'package:kiran_portfolio_website/features/talk_with_me/view/talk_with_me_page.dart';
 import 'package:kiran_portfolio_website/features/tools_and_tech/view/tools_and_tech.dart';
+import 'package:selectable/selectable.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -25,8 +29,6 @@ class _DashboardState extends State<Dashboard>
   var contactPageKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(300, 70),
@@ -37,12 +39,18 @@ class _DashboardState extends State<Dashboard>
           offset: 450,
           globalKey: GlobalKey(),
           child: Container(
-            color: Colors.white,
             child: Row(
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("KIRAN"),
+                  child: Text(
+                    "KIRAN",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: FontFamily.agustina,
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 Padding(
@@ -111,19 +119,23 @@ class _DashboardState extends State<Dashboard>
       ),
       body: SingleChildScrollView(
         controller: context.scrollController,
-        child: Column(
-          children: [
-            HomePage(key: homePageKey),
-            AboutMePage(key: aboutMePageKey),
-            const ToolsAndTech(),
-            ServicesPage(key: servicePageKey),
-            ProjectsPage(
-              key: projectPageKey,
-            ),
-            ContactPage(
-              key: contactPageKey,
-            )
-          ],
+        child: Selectable(
+          child: Column(
+            children: [
+              HomePage(key: homePageKey),
+              AboutMePage(key: aboutMePageKey),
+              const ToolsAndTech(),
+              ServicesPage(key: servicePageKey),
+              ProjectsPage(
+                key: projectPageKey,
+              ),
+              ContactPage(
+                key: contactPageKey,
+              ),
+              const TalkWithMePage(),
+              const FooterSection()
+            ],
+          ),
         ),
       ),
     );

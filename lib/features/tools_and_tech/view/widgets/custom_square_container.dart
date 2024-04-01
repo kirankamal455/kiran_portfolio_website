@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SquareWidget extends StatelessWidget {
@@ -14,7 +15,7 @@ class SquareWidget extends StatelessWidget {
         imagePath,
         height: 55,
       ),
-      imageName.text.make().p(8)
+      imageName.text.fontFamily(FontFamily.montserrat).make().p(8)
     ].vStack().pOnly(top: 70);
   }
 }

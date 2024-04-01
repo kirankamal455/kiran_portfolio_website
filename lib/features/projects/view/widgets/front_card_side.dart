@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class FrontCardSide extends StatelessWidget {
-  const FrontCardSide({super.key});
+  final String ProjectDescription;
+  const FrontCardSide({super.key, required this.ProjectDescription});
 
   @override
   Widget build(BuildContext context) {
-    return VxBox().color(Colors.green).make();
+    return VxBox(child: ProjectDescription.text.bold.white.make().centered())
+        .color(Colors.green)
+        .make();
   }
 }
