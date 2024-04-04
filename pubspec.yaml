@@ -10,7 +10,10 @@ environment:
 
 dependencies:
   animated_text_kit: ^4.2.2
+  cross_file: ^0.3.3+8
   cupertino_icons: ^1.0.6
+  firebase_core:  
+  firebase_storage: ^11.6.9
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
@@ -21,6 +24,7 @@ dependencies:
   flutter_social_button: ^1.1.4+1
   gap: ^3.0.1
   hovering: ^1.0.4
+  path_provider: ^2.1.2
   responsive_framework: ^1.1.1
   selectable: null
   velocity_x: ^4.1.2
@@ -63,6 +67,7 @@ flutter:
     - assets/images/
     - assets/images/tools_images/
     - assets/images/service_images/
+    - assets/pdf/
   fonts:
     - family: Agustina
       fonts:

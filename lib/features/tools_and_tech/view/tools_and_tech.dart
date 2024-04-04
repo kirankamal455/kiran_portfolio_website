@@ -26,8 +26,10 @@ class _ToolsAndTechState extends State<ToolsAndTech> {
       child: [
         const CustomSectionHeading(headingName: "Tools & Tech"),
         Wrap(
-          alignment: WrapAlignment.spaceAround,
+          alignment: WrapAlignment.center,
+          runSpacing: 10,
           spacing: 50,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
             SquareWidget(
               imagePath: MyAssets.images.toolsImages.flutter.path,
