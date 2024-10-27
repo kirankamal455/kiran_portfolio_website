@@ -61,8 +61,7 @@ class _CusotmProjectCardState extends State<CusotmProjectCard> {
             )
             .make()
             .h(200)
-            .w(300)
-            .p(10),
+            .w(330),
       ),
     );
   }

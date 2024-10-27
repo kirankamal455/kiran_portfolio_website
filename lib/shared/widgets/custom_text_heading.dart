@@ -16,7 +16,7 @@ class CustomSectionHeading extends StatelessWidget {
     return headingName.text.bold
         .size(40)
         .fontFamily(FontFamily.montserrat)
-        .make()
-        .fadeInUp();
+        .make();
+    // .fadeInUp();
   }
 }

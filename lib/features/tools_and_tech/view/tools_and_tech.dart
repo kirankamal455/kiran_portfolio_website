@@ -16,8 +16,7 @@ class ToolsAndTech extends StatefulWidget {
 }
 
 class _ToolsAndTechState extends State<ToolsAndTech> {
-  bool animate = true;
-  late AnimationController controller;
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _ToolsAndTechState extends State<ToolsAndTech> {
             SquareWidget(
               imagePath: MyAssets.images.toolsImages.flutter.path,
               imageName: 'Flutter',
-            ).fadeInRight(milliseconds: 500, offset: 0),
+            ).fadeInRight(milliseconds: 500, offset: 0 ),
             SquareWidget(
               imagePath: MyAssets.images.toolsImages.dart.path,
               imageName: 'Dart',

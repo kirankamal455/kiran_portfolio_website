@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage>
                         WavyAnimatedText(
                           'Hi There',
                           textStyle: const TextStyle(
+                            color: Colors.black,
                             fontFamily: FontFamily.montserrat,
                             fontWeight: FontWeight.bold,
                             fontSize: 55,
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage>
                       ],
                       isRepeatingAnimation: true,
                     ),
-                  ).box.make(),
+                  ),
                   Text.rich(
                     TextSpan(
                       children: [

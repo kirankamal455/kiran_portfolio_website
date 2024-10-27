@@ -1,8 +1,13 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:kiran_portfolio_website/data/model/contact_details_model.dart';
+import 'package:kiran_portfolio_website/features/contact/controller/contact_details_pod.dart';
 import 'package:kiran_portfolio_website/features/contact/view/widgets/custom_contact_card.dart';
 import 'package:kiran_portfolio_website/shared/extenstion/fade_extenstion.dart';
 import 'package:kiran_portfolio_website/shared/widgets/custom_text_heading.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ContactPage extends StatelessWidget {
@@ -17,29 +22,49 @@ class ContactPage extends StatelessWidget {
       //     .xl6
       //     .make()
       //     .fadeInUp(duration: const Duration(milliseconds: 1300), offset: 100),
-      VxBox(
-          child: Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: [
-          const CustomContactCard(
-            icon: Icons.home,
-            tittle: "Home",
-            subtittle: "Pathanamthitta, Kerala",
-          ).fadeInUp(offset: 0),
-          const CustomContactCard(
-            icon: Icons.phone,
-            tittle: "Phone",
-            subtittle: "+918113887254",
-          ).fadeInUp(offset: 50),
-          const CustomContactCard(
-            icon: Icons.email,
-            tittle: "Email",
-            subtittle: "Kirankamal45@gmail.com",
-          ).fadeInUp(offset: 100),
-        ],
-      )).make().pSymmetric(h: 150).pSymmetric(v: 40)
+      VxBox(child: Consumer(builder: (context, ref, child) {
+        final contactDetails = ref.watch(contactDetailsPod);
+        return ResponsiveBreakpoints.of(context).smallerThan(MOBILE)
+            ? CarouselSlider.builder(
+                options: CarouselOptions(autoPlay: true),
+                itemCount: contactDetails.length,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        CustomContactCard(
+                  icon: contactDetails[itemIndex].type == 0
+                      ? Icons.home
+                      : contactDetails[itemIndex].type == 1
+                          ? Icons.phone
+                          : Icons.email,
+                  tittle: contactDetails[itemIndex].tittle,
+                  subtittle: contactDetails[itemIndex].Subtittle,
+                ),
+              )
+            : Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: [
+                    ...contactDetails.map(
+                      (e) => CustomContactCard(
+                        icon: e.type == 0
+                            ? Icons.home
+                            : e.type == 1
+                                ? Icons.phone
+                                : Icons.email,
+                        tittle: e.tittle,
+                        subtittle: e.Subtittle,
+                      ).fadeInUp(
+                          offset: e.type == 0
+                              ? 0
+                              : e.type == 1
+                                  ? 50
+                                  : 100),
+                    )
+                  ]);
+      })).make()
+
+      //.pSymmetric(h: 150).pSymmetric(v: 40)
     ].vStack().pSymmetric(v: 20);
   }
 }

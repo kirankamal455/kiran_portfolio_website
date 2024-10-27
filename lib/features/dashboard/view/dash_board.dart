@@ -1,5 +1,8 @@
-import 'package:flutter/gestures.dart';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate_on_scroll/flutter_animate_on_scroll.dart';
 import 'package:gap/gap.dart';
 import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
@@ -13,12 +16,12 @@ import 'package:kiran_portfolio_website/features/talk_with_me/view/talk_with_me_
 import 'package:kiran_portfolio_website/features/tools_and_tech/view/tools_and_tech.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:selectable/selectable.dart';
-import 'dart:html' as html;
 
 import 'dart:typed_data';
-import 'package:cross_file/cross_file.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -30,6 +33,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController scrollController = ScrollController();
   var homePageKey = GlobalKey();
   var aboutMePageKey = GlobalKey();
   var servicePageKey = GlobalKey();
@@ -55,9 +59,9 @@ class _DashboardState extends State<Dashboard>
   }
 
   void downloadFile(String url) {
-    html.AnchorElement anchorElement = html.AnchorElement(href: url);
-    anchorElement.download = url;
-    anchorElement.click();
+    // html.AnchorElement anchorElement = html.AnchorElement(href: url);
+    // anchorElement.download = url;
+    // anchorElement.click();
   }
 
   void startDownload() async {
@@ -65,236 +69,303 @@ class _DashboardState extends State<Dashboard>
         "gs://myportfolio-2b14b.appspot.com/dummy.pdf", "kiranResume");
   }
 
+  Future<void> savePdf() async {
+    try {
+      // Request storage permissions
+      var status = await Permission.storage.request();
+
+      if (status.isGranted) {
+        // Load PDF from assets
+        final ByteData bytes =
+            await rootBundle.load("assets/pdf/kiranResume.pdf");
+        final Uint8List buffer = bytes.buffer.asUint8List();
+
+        // Get the download directory
+        final Directory? directory = await getExternalStorageDirectory();
+
+        if (directory != null) {
+          // Create a file in the download folder
+          final File file = File('${directory.path}/kiranResume.pdf');
+
+          // Write the PDF file
+          await file.writeAsBytes(buffer);
+          print('PDF saved to ${file.path}');
+        }
+      } else {
+        print('Permission denied');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    context.scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.all(0),
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.green,
-              ), //BoxDecoration
-              child: UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Colors.green),
-                accountName: Text(
-                  "Abhishek Mishra",
-                  style: TextStyle(fontSize: 18),
-                ),
-                accountEmail: Text("abhishekm977@gmail.com"),
-                currentAccountPictureSize: Size.square(50),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                  child: Text(
-                    "A",
-                    style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                  ), //Text
-                ), //circleAvatar
-              ), //UserAccountDrawerHeader
-            ), //DrawerHeader
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(' My Profile '),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.book),
-              title: const Text(' My Course '),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.workspace_premium),
-              title: const Text(' Go Premium '),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.video_label),
-              title: const Text(' Saved Videos '),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text(' Edit Profile '),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('LogOut'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
       ),
-      appBar: PreferredSize(
-        preferredSize: const Size(300, 70),
-        child: FadeInDown(
-          delay: 0.ms,
-          duration: const Duration(milliseconds: 1400),
-          curves: Curves.easeOut,
-          offset: 450,
-          globalKey: GlobalKey(),
-          child: Container(
-            child: Row(
-              children: [
-                ResponsiveVisibility(
-                  visible: false,
-                  visibleConditions: const [
-                    Condition.equals(name: TABLET),
-                    Condition.equals(name: MOBILE),
-                    Condition.equals(name: 'MOBILE_SMALL')
-                  ],
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      onPressed: () {
-                        _scaffoldKey.currentState!.openDrawer();
-                      },
-                      icon: const Icon(Icons.menu),
-                    ),
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          child: ListView(
+            padding: const EdgeInsets.all(0),
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: context.primaryColor,
+                ), //BoxDecoration
+                child: UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(color: context.primaryColor),
+                  accountName: const Text(
+                    "Kiran Kamal",
+                    style: TextStyle(fontSize: 18),
                   ),
-                ),
-                const ResponsiveVisibility(
-                  visible: false,
-                  visibleConditions: [Condition.largerThan(name: TABLET)],
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                  accountEmail: const Text(
+                    "Kirankamal45@gmail.com",
+                  ),
+                  currentAccountPictureSize: const Size.square(50),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.white,
                     child: Text(
-                      "KIRAN",
+                      "K",
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: FontFamily.agustina,
+                          fontSize: 30.0, color: context.primaryColor),
+                    ), //Text
+                  ), //circleAvatar
+                ), //UserAccountDrawerHeader
+              ), //DrawerHeader
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('HOME'),
+                onTap: () {
+                  Scrollable.ensureVisible(
+                    homePageKey.currentContext!,
+                    duration: const Duration(milliseconds: 700),
+                    curve: Curves.easeInOut,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.book),
+                title: const Text('ABOUT'),
+                onTap: () {
+                  Scrollable.ensureVisible(
+                    aboutMePageKey.currentContext!,
+                    duration: const Duration(milliseconds: 700),
+                    curve: Curves.easeInOut,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.workspace_premium),
+                title: const Text('SERVICES'),
+                onTap: () {
+                  Scrollable.ensureVisible(
+                    servicePageKey.currentContext!,
+                    duration: const Duration(milliseconds: 700),
+                    curve: Curves.easeInOut,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.video_label),
+                title: const Text('PROJECTS'),
+                onTap: () {
+                  Scrollable.ensureVisible(
+                    contactPageKey.currentContext!,
+                    duration: const Duration(milliseconds: 700),
+                    curve: Curves.easeInOut,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('RESUME'),
+                onTap: () {
+                  savePdf();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+        appBar: PreferredSize(
+          preferredSize: const Size(300, 70),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: FadeInDown(
+              delay: 0.ms,
+              duration: const Duration(milliseconds: 1400),
+              curves: Curves.easeOut,
+              offset: 450,
+              globalKey: GlobalKey(),
+              child: Container(
+                child: Row(
+                  children: [
+                    ResponsiveVisibility(
+                      visible: false,
+                      visibleConditions: const [
+                        Condition.equals(name: TABLET),
+                        Condition.equals(name: MOBILE),
+                        Condition.equals(name: 'MOBILE_SMALL')
+                      ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                          onPressed: () {
+                            _scaffoldKey.currentState!.openDrawer();
+                          },
+                          icon: const Icon(Icons.menu),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                const Spacer(),
-                const ResponsiveVisibility(
-                  visible: false,
-                  visibleConditions: [
-                    Condition.equals(name: TABLET),
-                    Condition.equals(name: MOBILE),
-                    Condition.equals(name: 'MOBILE_SMALL')
-                  ],
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "KIRAN",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: FontFamily.agustina,
+                    const ResponsiveVisibility(
+                      visible: false,
+                      visibleConditions: [Condition.largerThan(name: TABLET)],
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "KIRAN",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: FontFamily.agustina,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                ResponsiveVisibility(
-                    visible: false,
-                    visibleConditions: const [
-                      Condition.largerThan(name: TABLET),
-                      // Condition.equals(name: MOBILE)
-                    ],
-                    child: Padding(
-                      padding: const EdgeInsets.all(13),
-                      child: Row(
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                Scrollable.ensureVisible(
-                                  homePageKey.currentContext!,
-                                  duration: const Duration(milliseconds: 700),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: const Text("HOME")),
-                          const Gap(14),
-                          TextButton(
-                              onPressed: () {
-                                Scrollable.ensureVisible(
-                                  aboutMePageKey.currentContext!,
-                                  duration: const Duration(milliseconds: 700),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: const Text("ABOUT")),
-                          const Gap(14),
-                          TextButton(
-                              onPressed: () {
-                                Scrollable.ensureVisible(
-                                  servicePageKey.currentContext!,
-                                  duration: const Duration(milliseconds: 700),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: const Text("SERVICES")),
-                          const Gap(14),
-                          TextButton(
-                              onPressed: () {
-                                Scrollable.ensureVisible(
-                                  projectPageKey.currentContext!,
-                                  duration: const Duration(milliseconds: 700),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: const Text("PROJECTS")),
-                          const Gap(14),
-                          TextButton(
-                              onPressed: () {
-                                Scrollable.ensureVisible(
-                                  contactPageKey.currentContext!,
-                                  duration: const Duration(milliseconds: 700),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: const Text("CONTACTS")),
-                          const Gap(14),
-                          OutlinedButton(
-                              onPressed: () async {
-                                downloadFile("assets/pdf/kiranResume.pdf");
-
-                                // startDownload();
-                              },
-                              child: const Text("RESUME"))
+                    const Spacer(),
+                    const ResponsiveVisibility(
+                      visible: false,
+                      visibleConditions: [
+                        Condition.equals(name: TABLET),
+                        Condition.equals(name: MOBILE),
+                        Condition.equals(name: 'MOBILE_SMALL')
+                      ],
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "KIRAN",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: FontFamily.agustina,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ResponsiveVisibility(
+                        visible: false,
+                        visibleConditions: const [
+                          Condition.largerThan(name: TABLET),
+                          // Condition.equals(name: MOBILE)
                         ],
-                      ),
-                    ))
-              ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(13),
+                          child: Row(
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Scrollable.ensureVisible(
+                                      homePageKey.currentContext!,
+                                      duration:
+                                          const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: const Text("HOME")),
+                              const Gap(14),
+                              TextButton(
+                                  onPressed: () {
+                                    Scrollable.ensureVisible(
+                                      aboutMePageKey.currentContext!,
+                                      duration:
+                                          const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: const Text("ABOUT")),
+                              const Gap(14),
+                              TextButton(
+                                  onPressed: () {
+                                    Scrollable.ensureVisible(
+                                      servicePageKey.currentContext!,
+                                      duration:
+                                          const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: const Text("SERVICES")),
+                              const Gap(14),
+                              TextButton(
+                                  onPressed: () {
+                                    Scrollable.ensureVisible(
+                                      projectPageKey.currentContext!,
+                                      duration:
+                                          const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: const Text("PROJECTS")),
+                              const Gap(14),
+                              TextButton(
+                                  onPressed: () {
+                                    Scrollable.ensureVisible(
+                                      contactPageKey.currentContext!,
+                                      duration:
+                                          const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: const Text("CONTACTS")),
+                              const Gap(14),
+                              OutlinedButton(
+                                  onPressed: () async {
+                                    downloadFile("assets/pdf/kiranResume.pdf");
+
+                                    // startDownload();
+                                  },
+                                  child: const Text("RESUME"))
+                            ],
+                          ),
+                        ))
+                  ],
+                ),
+              ),
             ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        controller: context.scrollController,
-        child: Selectable(
-          child: Column(
-            children: [
-              HomePage(key: homePageKey),
-              AboutMePage(key: aboutMePageKey),
-              const ToolsAndTech(),
-              ServicesPage(key: servicePageKey),
-              ProjectsPage(
-                key: projectPageKey,
-              ),
-              ContactPage(
-                key: contactPageKey,
-              ),
-              const TalkWithMePage(),
-              const FooterSection()
-            ],
+        body: SingleChildScrollView(
+          controller: context.scrollController,
+          child: Selectable(
+            child: Column(
+              children: [
+                HomePage(key: homePageKey),
+                AboutMePage(key: aboutMePageKey),
+                const ToolsAndTech(),
+                ServicesPage(key: servicePageKey),
+                ProjectsPage(
+                  key: projectPageKey,
+                ),
+                ContactPage(
+                  key: contactPageKey,
+                ),
+                const TalkWithMePage(),
+                const FooterSection()
+              ],
+            ),
           ),
         ),
       ),

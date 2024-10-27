@@ -30,51 +30,48 @@ class AboutMePage extends StatelessWidget {
           rowMainAxisAlignment: MainAxisAlignment.spaceEvenly,
           rowCrossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ResponsiveRowColumnItem(
-              child: FadeInLeft(
-                delay: 0.ms,
-                duration: const Duration(milliseconds: 1400),
-                curves: Curves.easeOut,
-                offset: 600,
-                globalKey: GlobalKey(),
-                child: VxBox(
-                    child: Image.asset(
-                  MyAssets.images.profileSide.path,
-                  height: 500,
-                )).height(500).width(400).make(),
-              ),
-            ),
+            ResponsiveBreakpoints.of(context).largerThan(MOBILE)
+                ? ResponsiveRowColumnItem(
+                    child: FadeInLeft(
+                      delay: 0.ms,
+                      duration: const Duration(milliseconds: 1400),
+                      curves: Curves.easeOut,
+                      offset: 600,
+                      globalKey: GlobalKey(),
+                      child: VxBox(
+                          child: Image.asset(
+                        MyAssets.images.profileSide.path,
+                        height: 500,
+                      )).height(500).width(400).make(),
+                    ),
+                  )
+                : const ResponsiveRowColumnItem(child: SizedBox.shrink()),
             ResponsiveRowColumnItem(
               rowFlex: 1,
               rowFit: FlexFit.tight,
-              child: FadeInRight(
-                delay: 0.ms,
-                duration: const Duration(milliseconds: 1400),
-                curves: Curves.easeOut,
-                offset: 450,
-                globalKey: GlobalKey(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    "Who am I?".text.xl3.make(),
-                    "I'm Kiran kamal ,a Flutter developer,Ui dessigner"
-                        .text
-                        .xl4
-                        .bold
-                        .fontFamily(FontFamily.poppins)
-                        .align(TextAlign.justify)
-                        .make(),
-                    "I'm a B-Tech graduate with Infomation Technology. I have been developing mobile apps for over 1.8 years now \nAs a Flutter developer, I specialize in building cross-platform applications that run smoothly on both Android and iOS devices, leveraging the power of Google's versatile UI toolkit. My expertise extends beyond mere functionality; I thrive on designing visually stunning user interfaces that not only captivate users but also enhance their interaction with the app."
-                        .text
-                        .xl2
-                        .fontFamily(FontFamily.montserrat)
-                        .align(TextAlign.justify)
-                        .make()
-                  ],
-                ),
-              ),
-            )
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  "Who am I?".text.xl3.make(),
+                  "I'm Kiran kamal ,a Flutter developer,Ui dessigner"
+                      .text
+                      .xl4
+                      .bold
+                      .fontFamily(FontFamily.poppins)
+                      .align(TextAlign.justify)
+                      .make()
+                      .pOnly(top: 15),
+                  "I'm a B-Tech graduate with Infomation Technology. I have been developing mobile apps for over 1.8 years now \nAs a Flutter developer, I specialize in building cross-platform applications that run smoothly on both Android and iOS devices, leveraging the power of Google's versatile UI toolkit. My expertise extends beyond mere functionality; I thrive on designing visually stunning user interfaces that not only captivate users but also enhance their interaction with the app."
+                      .text
+                      .xl2
+                      .fontFamily(FontFamily.montserrat)
+                      .align(TextAlign.justify)
+                      .make()
+                      .pOnly(top: 15)
+                ],
+              ).fadeInRight(),
+            ),
           ],
         ),
       )

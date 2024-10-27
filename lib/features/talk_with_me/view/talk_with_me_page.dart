@@ -1,10 +1,5 @@
-import 'dart:js';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
 import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:kiran_portfolio_website/features/talk_with_me/view/widgets/custom_interest_widget.dart';
@@ -17,17 +12,6 @@ class TalkWithMePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const colorizeColors = [
-      Colors.purple,
-      Colors.blue,
-      Colors.yellow,
-      Colors.white,
-    ];
-
-    const colorizeTextStyle = TextStyle(
-        fontSize: 40,
-        fontFamily: FontFamily.poppins,
-        fontWeight: FontWeight.bold);
     return VxBox(
       child: ResponsiveRowColumn(
         columnSpacing: 30,
@@ -44,15 +28,24 @@ class TalkWithMePage extends StatelessWidget {
                 animatedTexts: [
                   ColorizeAnimatedText(
                     'Lets discuss\non something cool together',
-                    textStyle: colorizeTextStyle,
-                    colors: colorizeColors,
+                    textStyle: const TextStyle(
+                        fontSize: 40,
+                        fontFamily: FontFamily.poppins,
+                        fontWeight: FontWeight.bold),
+                    colors: [
+                      Colors.purple,
+                      Colors.blue,
+                      Colors.yellow,
+                      Colors.white,
+                    ],
                   ),
                 ],
                 isRepeatingAnimation: true,
                 onTap: () {
                   print("Tap Event");
                 },
-              ).fadeInUp(),
+              ),
+              //.fadeInUp(),
               const Gap(60),
               "I'm interested in.."
                   .text
@@ -71,7 +64,8 @@ class TalkWithMePage extends StatelessWidget {
                   CutomIntresetWidget(intresetName: "UI/UX"),
                   CutomIntresetWidget(intresetName: "Cloud Development")
                 ],
-              ).w(500).fadeInUp(),
+              ).w(500)
+              //.fadeInUp(),
             ].vStack(crossAlignment: CrossAxisAlignment.start).box.make(),
           ),
           ResponsiveRowColumnItem(
@@ -171,13 +165,13 @@ class TalkWithMePage extends StatelessWidget {
               ElevatedButton.icon(
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(context.primaryColor),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      WidgetStateProperty.all<Color>(context.primaryColor),
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  minimumSize: MaterialStateProperty.all<Size>(
+                  minimumSize: WidgetStateProperty.all<Size>(
                     const Size(double.infinity, 50),
                   ),
                 ),
