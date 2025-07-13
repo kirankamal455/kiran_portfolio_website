@@ -27,4 +27,12 @@ extension FadeWidget on Widget {
         globalKey: GlobalKey(),
         child: this,
       );
+  Widget fadeInLeft({int milliseconds = 0, double? offset}) => FadeInLeft(
+        delay: 0.ms,
+        duration: const Duration(milliseconds: 1400),
+        curves: Curves.easeOut,
+        offset: 600,
+        globalKey: GlobalKey(),
+        child: this,
+      );
 }

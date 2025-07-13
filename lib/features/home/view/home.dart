@@ -2,15 +2,18 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate_on_scroll/flutter_animate_on_scroll.dart';
 import 'package:gap/gap.dart';
+import 'package:kiran_portfolio_website/const/app_urls.dart';
 import 'package:kiran_portfolio_website/const/resource.dart';
 import 'package:kiran_portfolio_website/core/gen/assets.gen.dart';
 import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
+import 'package:kiran_portfolio_website/data/model/user_profile_response_model.dart';
 import 'package:kiran_portfolio_website/features/home/view/widgets/custom_socialmedia_icon.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final UserProfileResponseModel userProfileResponseModel;
+  const HomePage({super.key, required this.userProfileResponseModel});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -77,21 +80,21 @@ class _HomePageState extends State<HomePage>
                   Text.rich(
                     TextSpan(
                       children: [
-                        const TextSpan(
-                          text: 'Kiran',
-                          style: TextStyle(
+                        TextSpan(
+                          text: widget.userProfileResponseModel.name,
+                          style: const TextStyle(
                               fontFamily: FontFamily.montserrat,
                               fontWeight: FontWeight.bold,
                               fontSize: 55),
                         ),
-                        TextSpan(
-                          text: ' Kamal',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 55,
-                            color: context.primaryColor,
-                          ),
-                        ),
+                        // TextSpan(
+                        //   text: ' Kamal',
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.bold,
+                        //     fontSize: 55,
+                        //     color: context.primaryColor,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -168,9 +171,10 @@ class _HomePageState extends State<HomePage>
               child: Container(
                 height: 300,
                 width: 300,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(R.ASSETS_IMAGES_PROFILE_JPG),
+                    image: NetworkImage(
+                        "${AppURLs.baseUrl}api/User/get-profileImage?imageId=${widget.userProfileResponseModel.image}"),
                     fit: BoxFit.cover,
                   ),
                   shape: BoxShape.circle,

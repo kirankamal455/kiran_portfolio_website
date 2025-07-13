@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kiran_portfolio_website/data/model/contact_details_model.dart';
+import 'package:kiran_portfolio_website/data/model/user_profile_response_model.dart';
 import 'package:kiran_portfolio_website/features/contact/controller/contact_details_pod.dart';
 import 'package:kiran_portfolio_website/features/contact/view/widgets/custom_contact_card.dart';
 import 'package:kiran_portfolio_website/shared/extenstion/fade_extenstion.dart';
@@ -11,7 +12,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ContactPage extends StatelessWidget {
-  const ContactPage({super.key});
+  final UserProfileResponseModel userProfileResponseModel;
+  const ContactPage({super.key, required this.userProfileResponseModel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class ContactPage extends StatelessWidget {
       //     .make()
       //     .fadeInUp(duration: const Duration(milliseconds: 1300), offset: 100),
       VxBox(child: Consumer(builder: (context, ref, child) {
-        final contactDetails = ref.watch(contactDetailsPod);
+        final contactDetails = ref.watch(contactDetailsPod(userProfileResponseModel));
         return ResponsiveBreakpoints.of(context).smallerThan(MOBILE)
             ? CarouselSlider.builder(
                 options: CarouselOptions(autoPlay: true),
@@ -54,12 +56,14 @@ class ContactPage extends StatelessWidget {
                                 : Icons.email,
                         tittle: e.tittle,
                         subtittle: e.Subtittle,
-                      ).fadeInUp(
-                          offset: e.type == 0
-                              ? 0
-                              : e.type == 1
-                                  ? 50
-                                  : 100),
+                      )
+                      
+                      // .fadeInUp(
+                      //     offset: e.type == 0
+                      //         ? 0
+                      //         : e.type == 1
+                      //             ? 50
+                      //             : 100),
                     )
                   ]);
       })).make()

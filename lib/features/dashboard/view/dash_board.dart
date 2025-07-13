@@ -1,13 +1,16 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate_on_scroll/flutter_animate_on_scroll.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kiran_portfolio_website/core/gen/fonts.gen.dart';
 import 'package:kiran_portfolio_website/features/about_me/view/about_me.dart';
 import 'package:kiran_portfolio_website/features/contact/view/contact.dart';
+import 'package:kiran_portfolio_website/features/dashboard/controller/get_user_profile_pod.dart';
 import 'package:kiran_portfolio_website/features/footer_section/view/footer_section.dart';
 import 'package:kiran_portfolio_website/features/home/view/home.dart';
 import 'package:kiran_portfolio_website/features/projects/view/projects.dart';
@@ -16,12 +19,10 @@ import 'package:kiran_portfolio_website/features/talk_with_me/view/talk_with_me_
 import 'package:kiran_portfolio_website/features/tools_and_tech/view/tools_and_tech.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:selectable/selectable.dart';
-
-import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:velocity_x/velocity_x.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -47,21 +48,9 @@ class _DashboardState extends State<Dashboard>
       const oneMegabyte = 1024 * 1024;
       final Uint8List? data = await httpsReference.getData(oneMegabyte);
       print("data is $data");
-      // Data for "images/island.jpg" is returned, use this as needed.
-      // XFile.fromData(data!,
-      //         mimeType: "application/octet-stream", name: "$fileName.pdf")
-      //     .saveTo("C:/"); // here Path is ignored
     } on FirebaseException catch (e) {
       print("Error: ${e.message}");
-      // Handle any errors.
     }
-    // for other platforms see this solution : https://firebase.google.com/docs/storage/flutter/download-files#download_to_a_local_file
-  }
-
-  void downloadFile(String url) {
-    // html.AnchorElement anchorElement = html.AnchorElement(href: url);
-    // anchorElement.download = url;
-    // anchorElement.click();
   }
 
   void startDownload() async {
@@ -71,23 +60,17 @@ class _DashboardState extends State<Dashboard>
 
   Future<void> savePdf() async {
     try {
-      // Request storage permissions
       var status = await Permission.storage.request();
 
       if (status.isGranted) {
-        // Load PDF from assets
         final ByteData bytes =
             await rootBundle.load("assets/pdf/kiranResume.pdf");
         final Uint8List buffer = bytes.buffer.asUint8List();
 
-        // Get the download directory
         final Directory? directory = await getExternalStorageDirectory();
 
         if (directory != null) {
-          // Create a file in the download folder
           final File file = File('${directory.path}/kiranResume.pdf');
-
-          // Write the PDF file
           await file.writeAsBytes(buffer);
           print('PDF saved to ${file.path}');
         }
@@ -101,7 +84,7 @@ class _DashboardState extends State<Dashboard>
 
   @override
   void dispose() {
-    context.scrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -121,7 +104,7 @@ class _DashboardState extends State<Dashboard>
               DrawerHeader(
                 decoration: BoxDecoration(
                   color: context.primaryColor,
-                ), //BoxDecoration
+                ),
                 child: UserAccountsDrawerHeader(
                   decoration: BoxDecoration(color: context.primaryColor),
                   accountName: const Text(
@@ -138,10 +121,10 @@ class _DashboardState extends State<Dashboard>
                       "K",
                       style: TextStyle(
                           fontSize: 30.0, color: context.primaryColor),
-                    ), //Text
-                  ), //circleAvatar
-                ), //UserAccountDrawerHeader
-              ), //DrawerHeader
+                    ),
+                  ),
+                ),
+              ),
               ListTile(
                 leading: const Icon(Icons.person),
                 title: const Text('HOME'),
@@ -183,7 +166,7 @@ class _DashboardState extends State<Dashboard>
                 title: const Text('PROJECTS'),
                 onTap: () {
                   Scrollable.ensureVisible(
-                    contactPageKey.currentContext!,
+                    projectPageKey.currentContext!,
                     duration: const Duration(milliseconds: 700),
                     curve: Curves.easeInOut,
                   );
@@ -204,7 +187,7 @@ class _DashboardState extends State<Dashboard>
         appBar: PreferredSize(
           preferredSize: const Size(300, 70),
           child: Padding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(top: 0),
             child: FadeInDown(
               delay: 0.ms,
               duration: const Duration(milliseconds: 1400),
@@ -267,80 +250,79 @@ class _DashboardState extends State<Dashboard>
                       ),
                     ),
                     ResponsiveVisibility(
-                        visible: false,
-                        visibleConditions: const [
-                          Condition.largerThan(name: TABLET),
-                          // Condition.equals(name: MOBILE)
-                        ],
-                        child: Padding(
-                          padding: const EdgeInsets.all(13),
-                          child: Row(
-                            children: [
-                              TextButton(
-                                  onPressed: () {
-                                    Scrollable.ensureVisible(
-                                      homePageKey.currentContext!,
-                                      duration:
-                                          const Duration(milliseconds: 700),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: const Text("HOME")),
-                              const Gap(14),
-                              TextButton(
-                                  onPressed: () {
-                                    Scrollable.ensureVisible(
-                                      aboutMePageKey.currentContext!,
-                                      duration:
-                                          const Duration(milliseconds: 700),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: const Text("ABOUT")),
-                              const Gap(14),
-                              TextButton(
-                                  onPressed: () {
-                                    Scrollable.ensureVisible(
-                                      servicePageKey.currentContext!,
-                                      duration:
-                                          const Duration(milliseconds: 700),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: const Text("SERVICES")),
-                              const Gap(14),
-                              TextButton(
-                                  onPressed: () {
-                                    Scrollable.ensureVisible(
-                                      projectPageKey.currentContext!,
-                                      duration:
-                                          const Duration(milliseconds: 700),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: const Text("PROJECTS")),
-                              const Gap(14),
-                              TextButton(
-                                  onPressed: () {
-                                    Scrollable.ensureVisible(
-                                      contactPageKey.currentContext!,
-                                      duration:
-                                          const Duration(milliseconds: 700),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: const Text("CONTACTS")),
-                              const Gap(14),
-                              OutlinedButton(
-                                  onPressed: () async {
-                                    downloadFile("assets/pdf/kiranResume.pdf");
-
-                                    // startDownload();
-                                  },
-                                  child: const Text("RESUME"))
-                            ],
-                          ),
-                        ))
+                      visible: false,
+                      visibleConditions: const [
+                        Condition.largerThan(name: TABLET),
+                      ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(13),
+                        child: Row(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Scrollable.ensureVisible(
+                                  homePageKey.currentContext!,
+                                  duration: const Duration(milliseconds: 700),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              child: const Text("HOME"),
+                            ),
+                            const Gap(14),
+                            TextButton(
+                              onPressed: () {
+                                Scrollable.ensureVisible(
+                                  aboutMePageKey.currentContext!,
+                                  duration: const Duration(milliseconds: 700),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              child: const Text("ABOUT"),
+                            ),
+                            const Gap(14),
+                            TextButton(
+                              onPressed: () {
+                                Scrollable.ensureVisible(
+                                  servicePageKey.currentContext!,
+                                  duration: const Duration(milliseconds: 700),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              child: const Text("SERVICES"),
+                            ),
+                            const Gap(14),
+                            TextButton(
+                              onPressed: () {
+                                Scrollable.ensureVisible(
+                                  projectPageKey.currentContext!,
+                                  duration: const Duration(milliseconds: 700),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              child: const Text("PROJECTS"),
+                            ),
+                            const Gap(14),
+                            TextButton(
+                              onPressed: () {
+                                Scrollable.ensureVisible(
+                                  contactPageKey.currentContext!,
+                                  duration: const Duration(milliseconds: 700),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              child: const Text("CONTACTS"),
+                            ),
+                            const Gap(14),
+                            OutlinedButton(
+                              onPressed: () {
+                                startDownload();
+                              },
+                              child: const Text("RESUME"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -348,23 +330,60 @@ class _DashboardState extends State<Dashboard>
           ),
         ),
         body: SingleChildScrollView(
-          controller: context.scrollController,
+          controller: scrollController,
           child: Selectable(
-            child: Column(
-              children: [
-                HomePage(key: homePageKey),
-                AboutMePage(key: aboutMePageKey),
-                const ToolsAndTech(),
-                ServicesPage(key: servicePageKey),
-                ProjectsPage(
-                  key: projectPageKey,
-                ),
-                ContactPage(
-                  key: contactPageKey,
-                ),
-                const TalkWithMePage(),
-                const FooterSection()
-              ],
+            child: Consumer(
+              builder: (context, ref, child) {
+                final userProfileAsync = ref.watch(getUserProfilePod(2));
+
+                return userProfileAsync.when(
+                  data: (userProfile) {
+                    return Column(
+                      children: [
+                        HomePage(
+                          key: homePageKey,
+                          userProfileResponseModel: userProfile,
+                        ),
+                        AboutMePage(
+                          key: aboutMePageKey,
+                        ),
+                        const ToolsAndTech(),
+                        ServicesPage(
+                          key: servicePageKey,
+                          userProfileResponseModel: userProfile,
+                        ),
+                        ProjectsPage(
+                          key: projectPageKey,
+                          userProfileResponseModel: userProfile,
+                        ),
+                        ContactPage(
+                          key: contactPageKey,
+                          userProfileResponseModel: userProfile,
+                        ),
+                        const TalkWithMePage(),
+                        const FooterSection(),
+                      ],
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator())
+                          .objectCenter(),
+                  error: (error, stack) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Error: $error'),
+                        ElevatedButton(
+                          onPressed: () {
+                            ref.refresh(getUserProfilePod(1));
+                          },
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ).objectCenter(),
+                  ),
+                );
+              },
             ),
           ),
         ),
