@@ -66,8 +66,10 @@ class _HomePageState extends State<HomePage>
                       animatedTexts: [
                         WavyAnimatedText(
                           'Hi There',
-                          textStyle: const TextStyle(
-                            color: Colors.black,
+                          textStyle: TextStyle(
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
                             fontFamily: FontFamily.montserrat,
                             fontWeight: FontWeight.bold,
                             fontSize: 55,
@@ -82,7 +84,10 @@ class _HomePageState extends State<HomePage>
                       children: [
                         TextSpan(
                           text: widget.userProfileResponseModel.name,
-                          style: const TextStyle(
+                          style: TextStyle(
+                              color: context.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
                               fontFamily: FontFamily.montserrat,
                               fontWeight: FontWeight.bold,
                               fontSize: 55),
@@ -101,10 +106,12 @@ class _HomePageState extends State<HomePage>
                   const Gap(10),
                   Row(
                     children: <Widget>[
-                      const Text(
+                      Text(
                         '''Iam a ''',
                         style: TextStyle(
                           fontSize: 23,
+                          color:
+                              context.isDarkMode ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
                           fontFamily: FontFamily.montserrat,
                         ),
@@ -119,14 +126,29 @@ class _HomePageState extends State<HomePage>
                         child: AnimatedTextKit(
                           animatedTexts: [
                             TyperAnimatedText(
+                              textStyle: TextStyle(
+                                color: context.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                               ' Flutter Developer',
                               speed: const Duration(milliseconds: 50),
                             ),
                             TyperAnimatedText(
+                              textStyle: TextStyle(
+                                color: context.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                               ' UI/UX Enthusiast',
                               speed: const Duration(milliseconds: 50),
                             ),
                             TyperAnimatedText(
+                              textStyle: TextStyle(
+                                color: context.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                               ' Programmer',
                               speed: const Duration(milliseconds: 50),
                             ),
@@ -184,6 +206,17 @@ class _HomePageState extends State<HomePage>
           )
         ],
       ),
-    );
+    )
+        .box
+        // .withGradient(const LinearGradient(
+        //     begin: Alignment.centerLeft,
+        //     end: Alignment.centerRight,
+        //     colors: [
+        //       Color.fromARGB(255, 36, 5, 55),
+        //       Color.fromARGB(255, 146, 14, 228),
+        //       Color.fromARGB(255, 108, 23, 162),
+        //       Color.fromARGB(255, 108, 23, 162)
+        //     ]))
+        .make();
   }
 }
